@@ -12,7 +12,6 @@ def preprocess(data):
     data[:,0] = (data[:,0] == 'M').astype(float)
     data = data.astype(float)
     data[:,1:] = stats.zscore(data[:,1:],axis=0)
-    # print(data)
     return data
 
 def normalize(x, denorm=False):
@@ -40,7 +39,7 @@ def kFolds(data, k=1):
         if remainSize != 0:
             trainSet[i].extend(data[-(dataSize % k):])
     
-    return trainSet, testSet
+    return np.asarray(trainSet), np.asarray(testSet)
 
 if __name__ == 'preprocess':
     normalRange = np.vectorize(normalize)
