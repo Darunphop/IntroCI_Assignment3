@@ -1,10 +1,19 @@
 import numpy as np
+from scipy import stats
 
 def input(input):
     res = []
     with open(input, 'r') as inputFile:
         res = np.asarray([line.rstrip().split(',') for line in inputFile])
     return res
+
+def preprocess(data):
+    data = np.delete(data,0,1)
+    data[:,0] = (data[:,0] == 'M').astype(float)
+    data = data.astype(float)
+    data[:,1:] = stats.zscore(data[:,1:],axis=0)
+    # print(data)
+    return data
 
 def normalize(x, denorm=False):
     #max 628 min 95 || 0 - 700
