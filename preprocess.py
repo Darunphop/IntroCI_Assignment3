@@ -14,15 +14,6 @@ def preprocess(data):
     data[:,1:] = stats.zscore(data[:,1:],axis=0)
     return data
 
-def normalize(x, denorm=False):
-    #max 628 min 95 || 0 - 700
-    # MAX = 700.0
-    MAX = 1.0
-    MIN = 0.0
-    if denorm:
-        return (x * (MAX - MIN) + MIN)
-    return (x - MIN) / (MAX - MIN)
-
 def kFolds(data, k=1):
     trainSet = [[] for i in range(k)]
     testSet = [[] for i in range(k)]
@@ -42,7 +33,7 @@ def kFolds(data, k=1):
     return np.asarray(trainSet), np.asarray(testSet)
 
 if __name__ == 'preprocess':
-    normalRange = np.vectorize(normalize)
+    pass
 
 if __name__ == '__main__':
     data = [[1,2,3,4],[4,5,6,7]]
