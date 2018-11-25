@@ -12,17 +12,22 @@ def modelInit(model):
         # weight.append(np.ones((layerSize[i+1], layerSize[i])) / 5**-2)
     bias = []
     for i in range(nHidden):
-        bias.append(np.random.rand(layerSize[i+1]))
+        bias.append(np.random.randn(layerSize[i+1]))
 
     return weight, bias, activationLayer
 
 def feedForward(input, weigth, bias, activation):
     res = []
-    tmp = []
+    tmp = input
     
 
     for i in range(len(activation)-1):
-        tmp = np.dot(len(tmp)==0 and input or tmp, np.transpose(weigth[i]))
+        # interm = 0
+        # if len(tmp)==0:
+        #     interm = input
+        # else:
+        #     interm = tmp
+        tmp = np.dot(tmp, np.transpose(weigth[i]))
         for j in range(tmp.shape[0]):
             for k in range(tmp.shape[1]):
                 tmp[j][k] += bias[i][k]
