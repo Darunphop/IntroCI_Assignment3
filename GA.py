@@ -1,3 +1,4 @@
+import numpy as np
 
 class GeneticAlgorithm:
     def __init__(self, fitnessFunc, initFunc, seed, nPopulation, it, sRate, mRate):
@@ -10,8 +11,13 @@ class GeneticAlgorithm:
         self.sRate = sRate
         self.mRate = mRate
 
+        self.fitness = np.zeros(nPopulation)
+        self.act = self.initFunc(self.model)[2]
+
         for i in range(nPopulation):
             self.population.append(self.initFunc(self.model)[0])
 
-    def getFitness(self):
-        return 0
+    def updateFitness(self, data):
+        for i in range(self.nPopulation):
+            o = self.fitnessFunc[1](data[0],self.population[i],0,self.act)
+            self.fitness[i] = self.fitnessFunc[0](o[-1],data[1])
