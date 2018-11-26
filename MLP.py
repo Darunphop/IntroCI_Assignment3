@@ -34,3 +34,12 @@ def feedForward(input, weigth, bias, activation):
         tmp = act.activate(np.copy(tmp), activation[i+1])
         res.append(np.asarray(tmp))
     return res
+
+def classInterprete(y):
+    return (y[:,0] <= y[:,1]).astype(int)
+
+def getError(y, d):
+    a = classInterprete(y)
+    b = d.astype(int)
+
+    return (a==b).astype(int).sum() / b.shape[0]
