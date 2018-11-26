@@ -28,9 +28,9 @@ def feedForward(input, weigth, bias, activation):
         # else:
         #     interm = tmp
         tmp = np.dot(tmp, np.transpose(weigth[i]))
-        for j in range(tmp.shape[0]):
-            for k in range(tmp.shape[1]):
-                tmp[j][k] += bias[i][k]
+        # for j in range(tmp.shape[0]):
+        #     for k in range(tmp.shape[1]):
+        #         tmp[j][k] += bias[i][k]
         tmp = act.activate(np.copy(tmp), activation[i+1])
         res.append(np.asarray(tmp))
     return res
