@@ -23,12 +23,33 @@ class GeneticAlgorithm:
             self.fitness[i] = self.fitnessFunc[0](o[-1],data[1])
 
     def selection(self):
-        
         csum = np.cumsum(self.fitness)
-        x = csum[-1] * np.random.ranf()
-        id = np.argmax(csum>x)
-        # print(x, id)
-        # print(zip(csum))
+        spareSize = (int(self.nPopulation * self.sRate) >> 1) << 1
+        id = []
+        for i in range(spareSize):
+            x = csum[-1] * np.random.ranf()
+            id.append(np.argmax(csum>x))
+
+        itmPopuplation = np.asarray(self.population)[id]
+        self.population = np.delete(self.population, id)
+        self.fitness = np.delete(self.fitness, id)
+
+        drop = spareSize - len(list(set(id)))
+        if drop > 0:
+            rIdx = np.argpartition(self.fitness, drop)
+            print(rIdx[:drop])
+            self.population = np.delete(self.population, rIdx)
+            self.fitness = np.delete(self.fitness, rIdx)
+        
+        self.mating()
+        # print(len(itmPopuplation))
+        # print(list(set(id)))
+        # print(csum[id])
+        # self.population = np.delete(self.population, id)
+        # print(len(self.population))
         # for i, it in enumerate(csum):
             # print(i,it)
-        return 0 
+        return 0
+
+    def mating(self):
+        return 0
