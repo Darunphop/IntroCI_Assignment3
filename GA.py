@@ -21,3 +21,14 @@ class GeneticAlgorithm:
         for i in range(self.nPopulation):
             o = self.fitnessFunc[1](data[0],self.population[i],0,self.act)
             self.fitness[i] = self.fitnessFunc[0](o[-1],data[1])
+
+    def selection(self):
+        
+        csum = np.cumsum(self.fitness)
+        x = csum[-1] * np.random.ranf()
+        id = np.argmax(csum>x)
+        # print(x, id)
+        # print(zip(csum))
+        # for i, it in enumerate(csum):
+            # print(i,it)
+        return 0 
