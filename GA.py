@@ -1,4 +1,5 @@
 import numpy as np
+import copy
 
 class GeneticAlgorithm:
     def __init__(self, fitnessFunc, initFunc, seed, nPopulation, it, sRate, mRate):
@@ -41,7 +42,7 @@ class GeneticAlgorithm:
             self.population = np.delete(self.population, rIdx)
             self.fitness = np.delete(self.fitness, rIdx)
         
-        self.mating()
+        self.mating(itmPopuplation)
         # print(len(itmPopuplation))
         # print(list(set(id)))
         # print(csum[id])
@@ -51,5 +52,28 @@ class GeneticAlgorithm:
             # print(i,it)
         return 0
 
-    def mating(self):
-        return 0
+    def mating(self, population):
+        res = []
+        np.random.shuffle(population)
+        for i in range(int(population.shape[0]/2)):
+            if i == 1:
+                res.extend(self.crossover(population[i], population[i+1]))
+        return res
+
+    def crossover(self, i1, i2):
+        shape = [(i.shape[0],i.shape[1]) for i in i1]
+        chromosome1 = np.concatenate((i1[0],i1[1],i1[2]), axis=None)
+        chromosome2 = np.concatenate((i2[0],i2[1],i2[2]), axis=None)
+
+        cp = [0,0]
+
+        while abs(cp[0] - cp[1]) < 0.10*chromosome1.shape[0]: 
+            cp = np.random.randint(0,chromosome1.shape[0],2)
+        cp.sort()
+        print(cp[0] , cp[1])
+
+        tmp = chromosome1[cp[0]:cp[1]].copy()
+        chromosome1[cp[0]:cp[1]] = chromosome2[cp[0]:cp[1]].copy()
+        chromosome2[cp[0]:cp[1]] = tmp
+
+        return [0,0]
