@@ -26,14 +26,17 @@ class GeneticAlgorithm:
     def selection(self):
         csum = np.cumsum(self.fitness)
         spareSize = (int(self.nPopulation * self.sRate) >> 1) << 1
+
         id = []
         for i in range(spareSize):
             x = csum[-1] * np.random.ranf()
             id.append(np.argmax(csum>x))
-
+        print(len(self.population))
         itmPopuplation = np.asarray(self.population)[id]
         self.population = np.delete(self.population, id)
         self.fitness = np.delete(self.fitness, id)
+        print('after',len(self.population))
+        print(len(self.fitness))
 
         drop = spareSize - len(list(set(id)))
         if drop > 0:
@@ -42,23 +45,17 @@ class GeneticAlgorithm:
             self.population = np.delete(self.population, rIdx)
             self.fitness = np.delete(self.fitness, rIdx)
         
-        self.mating(itmPopuplation)
-        # print(len(itmPopuplation))
-        # print(list(set(id)))
-        # print(csum[id])
-        # self.population = np.delete(self.population, id)
-        # print(len(self.population))
-        # for i, it in enumerate(csum):
-            # print(i,it)
+        matedPop = self.mating(itmPopuplation)
+        mutatedPop = self.mutate(matedPop)
         return 0
 
     def mating(self, population):
         res = []
         np.random.shuffle(population)
         for i in range(int(population.shape[0]/2)):
-            if i == 1:
+            if i != -1:
                 res.extend(self.crossover(population[i], population[i+1]))
-        return res
+        return np.asarray(res)
 
     def crossover(self, i1, i2):
         shape = [(i.shape[0],i.shape[1]) for i in i1]
@@ -78,5 +75,8 @@ class GeneticAlgorithm:
 
         w1 = [i.reshape(shape[it]) for it,i in enumerate(np.split(chromosome1, size))]
         w2 = [i.reshape(shape[it]) for it,i in enumerate(np.split(chromosome2, size))]
-        
+
         return [w1,w2]
+
+    def mutate(self, population):
+        return 0

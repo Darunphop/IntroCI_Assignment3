@@ -22,9 +22,10 @@ if __name__ == '__main__':
     # print(trainSet[0][:,0])
     # MLP.getError(o[-1],trainSet[0][:,0])
     gai = ga.GeneticAlgorithm((MLP.getError, MLP.feedForward), MLP.modelInit, model, 100, 1, 0.2, 0)
-    print(gai.fitness)
+    # print(gai.fitness)
     gai.updateFitness((trainSet[0][:,1:],trainSet[0][:,0]))
-    print(gai.fitness)
+    # print(gai.fitness)
+    gai.selection()
     # print(gai.population[0][0])
     # print(gai.population[1][0])
     # del gai.population
