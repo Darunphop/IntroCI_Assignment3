@@ -62,6 +62,7 @@ class GeneticAlgorithm:
 
     def crossover(self, i1, i2):
         shape = [(i.shape[0],i.shape[1]) for i in i1]
+        size = np.cumsum([i.shape[0]*i.shape[1] for i in i1])[:-1]
         chromosome1 = np.concatenate((i1[0],i1[1],i1[2]), axis=None)
         chromosome2 = np.concatenate((i2[0],i2[1],i2[2]), axis=None)
 
@@ -70,10 +71,12 @@ class GeneticAlgorithm:
         while abs(cp[0] - cp[1]) < 0.10*chromosome1.shape[0]: 
             cp = np.random.randint(0,chromosome1.shape[0],2)
         cp.sort()
-        print(cp[0] , cp[1])
 
         tmp = chromosome1[cp[0]:cp[1]].copy()
         chromosome1[cp[0]:cp[1]] = chromosome2[cp[0]:cp[1]].copy()
         chromosome2[cp[0]:cp[1]] = tmp
 
-        return [0,0]
+        w1 = [i.reshape(shape[it]) for it,i in enumerate(np.split(chromosome1, size))]
+        w2 = [i.reshape(shape[it]) for it,i in enumerate(np.split(chromosome2, size))]
+        
+        return [w1,w2]
