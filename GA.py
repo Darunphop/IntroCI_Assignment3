@@ -31,13 +31,24 @@ class GeneticAlgorithm:
         for i in range(spareSize):
             x = csum[-1] * np.random.ranf()
             id.append(np.argmax(csum>x))
-        print(len(self.population))
-        itmPopuplation = np.asarray(self.population)[id]
-        self.population = np.delete(self.population, id)
-        self.fitness = np.delete(self.fitness, id)
-        print('after',len(self.population))
-        print(len(self.fitness))
 
+        # sum1 = 0
+        # for i in self.population:
+        #     x = np.concatenate((i[0],i[1],i[2]), axis=None)
+        #     sum1 += x.sum()
+
+        tmp = np.arange(100)
+        itmPopuplation = np.asarray(self.population)[id]
+        itmTmp = tmp[id]
+        tmp = np.delete(tmp, id)
+        self.population = np.delete(self.population, id, axis=0).tolist()
+        self.fitness = np.delete(self.fitness, id)
+
+        # sum1 = 0
+        # for i in self.population:
+        #     x = np.concatenate((i[0],i[1],i[2]), axis=None)
+        #     sum1 += x.sum()
+        # print('after sum1', sum1)
         drop = spareSize - len(list(set(id)))
         if drop > 0:
             rIdx = np.argpartition(self.fitness, drop)
