@@ -57,7 +57,7 @@ class GeneticAlgorithm:
         matedPop = self.mating(itmPopuplation)
         self.mutate(matedPop)
 
-        return 0
+        return itmPopuplation
 
     def mating(self, population):
         res = []
