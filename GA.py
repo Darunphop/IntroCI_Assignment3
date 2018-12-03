@@ -57,7 +57,8 @@ class GeneticAlgorithm:
             self.fitness = np.delete(self.fitness, rIdx)
         
         matedPop = self.mating(itmPopuplation)
-        mutatedPop = self.mutate(matedPop)
+        self.mutate(matedPop)
+        
         return 0
 
     def mating(self, population):
@@ -90,4 +91,29 @@ class GeneticAlgorithm:
         return [w1,w2]
 
     def mutate(self, population):
-        return 0
+        size = 1000
+        norm = np.random.normal(0,0.6,size)
+        # print(norm.max(), norm.min())
+        mask = np.random.choice([0, 1], size=(size,), p=[1.-self.mRate, self.mRate])
+        # print(norm)
+        # print(mask)
+        # print(np.multiply(norm, mask))
+
+
+        for it in range(len(population)):
+            c,sh,si = self.toChromosome(population[it])
+            norm = np.random.normal(0,0.6,c.shape[0])
+            mask = np.random.choice([0, 1], size=(c.shape[0],), p=[1.-self.mRate, self.mRate])
+            tmpC = np.multiply(norm, mask)
+            c += tmpC
+            population[it] = self.toValue(c,sh,si)
+
+    def toChromosome(self, value):
+        shape = [(i.shape[0],i.shape[1]) for i in value]
+        size = np.cumsum([i.shape[0]*i.shape[1] for i in value])[:-1]
+        chromosome = np.concatenate((value[0],value[1],value[2]), axis=None)
+
+        return chromosome, shape, size
+
+    def toValue(self, chromosome, shape, size):
+        return [i.reshape(shape[it]) for it,i in enumerate(np.split(chromosome, size))]
