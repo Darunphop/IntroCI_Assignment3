@@ -37,10 +37,7 @@ class GeneticAlgorithm:
         #     x = np.concatenate((i[0],i[1],i[2]), axis=None)
         #     sum1 += x.sum()
 
-        tmp = np.arange(100)
         itmPopuplation = np.asarray(self.population)[id]
-        itmTmp = tmp[id]
-        tmp = np.delete(tmp, id)
         self.population = np.delete(self.population, id, axis=0).tolist()
         self.fitness = np.delete(self.fitness, id)
 
@@ -50,15 +47,16 @@ class GeneticAlgorithm:
         #     sum1 += x.sum()
         # print('after sum1', sum1)
         drop = spareSize - len(list(set(id)))
+        print('drop', drop)
         if drop > 0:
             rIdx = np.argpartition(self.fitness, drop)
             print(rIdx[:drop])
-            self.population = np.delete(self.population, rIdx)
+            self.population = np.delete(self.population, rIdx[:drop], axis=0).tolist()
             self.fitness = np.delete(self.fitness, rIdx)
         
         matedPop = self.mating(itmPopuplation)
         self.mutate(matedPop)
-        
+
         return 0
 
     def mating(self, population):
