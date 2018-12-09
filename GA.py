@@ -8,9 +8,10 @@ class GeneticAlgorithm:
         self.initFunc = initFunc
         self.model = seed
         self.nPopulation = nPopulation
-        self.it = it
+        self.maIit = it
         self.sRate = sRate
         self.mRate = mRate
+        self.it = 0
 
         self.fitness = np.zeros(nPopulation)
         self.act = self.initFunc(self.model)[2]
@@ -47,28 +48,26 @@ class GeneticAlgorithm:
         #     sum1 += x.sum()
         # print('after sum1', sum1)
         drop = spareSize - len(list(set(id)))
-        print('drop', drop)
+        # print('drop', drop)
         if drop > 0:
             rIdx = np.argpartition(self.fitness, drop)
-            print(rIdx[:drop])
+            # print(rIdx[:drop])
             self.population = np.delete(self.population, rIdx[:drop], axis=0).tolist()
             self.fitness = np.delete(self.fitness, rIdx)
         
-        matedPop = self.mating(itmPopuplation)
-        self.mutate(matedPop)
+        # matedPop = self.mating(itmPopuplation)
+        # self.mutate(matedPop)
 
         return itmPopuplation
 
     def nextPopulation(self):
-        print(np.asarray(self.population).shape)
         itmPop = self.selection()
-        print(itmPop.shape)
-        print(self.hash(itmPop))
-        print(np.asarray(self.population).shape)
-        print(self.hash(self.population))
         newPop = np.concatenate((self.population, itmPop))
-        print(newPop.shape)
-        print(self.hash(newPop))
+        # print(self.hash(newPop))
+        self.mutate(newPop)
+        # print(self.hash(newPop))
+        self.population = newPop.tolist()
+        self.it += 1
 
     def mating(self, population):
         res = []
@@ -132,3 +131,7 @@ class GeneticAlgorithm:
         for i in w:
             sum += np.asarray([j.sum() for j in i]).sum()
         return sum
+    
+    def showStructure(self, w):
+        for i in w:
+            print([j.shape for j in i])
