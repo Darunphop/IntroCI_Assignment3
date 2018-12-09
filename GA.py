@@ -2,13 +2,13 @@ import numpy as np
 import copy
 
 class GeneticAlgorithm:
-    def __init__(self, fitnessFunc, initFunc, seed, nPopulation, it, sRate, mRate):
+    def __init__(self, fitnessFunc, initFunc, testData, seed, nPopulation, sRate, mRate):
         self.population = []
         self.fitnessFunc = fitnessFunc
         self.initFunc = initFunc
+        self.testData = testData
         self.model = seed
         self.nPopulation = nPopulation
-        self.maIit = it
         self.sRate = sRate
         self.mRate = mRate
         self.gBest = [0,0]
@@ -20,7 +20,20 @@ class GeneticAlgorithm:
         for i in range(nPopulation):
             self.population.append(self.initFunc(self.model)[0])
 
-    def updateFitness(self, data):
+    def run(self, it):
+        for i in range(it):
+            print('iteration ', i)
+            self.updateFitness()
+            self.nextPopulation()
+            self.updateFitness()
+            self.updateGBest()
+            if i == it-1:
+                return self.getFitest()
+
+
+    def updateFitness(self, data=0):
+        if data == 0:
+            data = self.testData 
         self.fitness = np.zeros(self.nPopulation)
         for i in range(self.nPopulation):
             o = self.fitnessFunc[1](data[0],self.population[i],0,self.act)
