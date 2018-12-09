@@ -21,14 +21,15 @@ class GeneticAlgorithm:
             self.population.append(self.initFunc(self.model)[0])
 
     def run(self, it):
+        res = []
         for i in range(it):
             print('iteration ', i)
             self.updateFitness()
             self.nextPopulation()
             self.updateFitness()
             self.updateGBest()
-            if i == it-1:
-                return self.getFitest()
+            res.append(self.getFitest()[0])
+        return res
 
 
     def updateFitness(self, data=0):
