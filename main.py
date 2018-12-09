@@ -17,7 +17,7 @@ if __name__ == '__main__':
 
     for i in range(k):
         if i == 0:
-            gai = ga.GeneticAlgorithm((MLP.getError, MLP.feedForward), MLP.modelInit, (trainSet[i][:,1:],trainSet[i][:,0]), model, 50, 0.2, 0.1)
+            gai = ga.GeneticAlgorithm((MLP.getError, MLP.feedForward), MLP.modelInit, (trainSet[i][:,1:],trainSet[i][:,0]), model, 5, 0.2, 0.1)
             lBests = gai.run(100)
             print(gai.gBest[0])
             # print(gai.fitness)

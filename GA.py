@@ -91,8 +91,8 @@ class GeneticAlgorithm:
     def crossover(self, i1, i2):
         shape = [(i.shape[0],i.shape[1]) for i in i1]
         size = np.cumsum([i.shape[0]*i.shape[1] for i in i1])[:-1]
-        chromosome1 = np.concatenate((i1[0],i1[1],i1[2]), axis=None)
-        chromosome2 = np.concatenate((i2[0],i2[1],i2[2]), axis=None)
+        chromosome1 = np.concatenate([i for i in i1], axis=None)
+        chromosome2 = np.concatenate([i for i in i2], axis=None)
 
         cp = [0,0]
 
@@ -138,7 +138,7 @@ class GeneticAlgorithm:
     def toChromosome(self, value):
         shape = [(i.shape[0],i.shape[1]) for i in value]
         size = np.cumsum([i.shape[0]*i.shape[1] for i in value])[:-1]
-        chromosome = np.concatenate((value[0],value[1],value[2]), axis=None)
+        chromosome = np.concatenate([i for i in value], axis=None)
 
         return chromosome, shape, size
 
