@@ -11,6 +11,7 @@ class GeneticAlgorithm:
         self.maIit = it
         self.sRate = sRate
         self.mRate = mRate
+        self.gBest = [0,0]
         self.it = 0
 
         self.fitness = np.zeros(nPopulation)
@@ -20,6 +21,7 @@ class GeneticAlgorithm:
             self.population.append(self.initFunc(self.model)[0])
 
     def updateFitness(self, data):
+        self.fitness = np.zeros(self.nPopulation)
         for i in range(self.nPopulation):
             o = self.fitnessFunc[1](data[0],self.population[i],0,self.act)
             self.fitness[i] = self.fitnessFunc[0](o[-1],data[1])
@@ -32,11 +34,6 @@ class GeneticAlgorithm:
         for i in range(spareSize):
             x = csum[-1] * np.random.ranf()
             id.append(np.argmax(csum>x))
-
-        # sum1 = 0
-        # for i in self.population:
-        #     x = np.concatenate((i[0],i[1],i[2]), axis=None)
-        #     sum1 += x.sum()
 
         itmPopuplation = np.asarray(self.population)[id]
         self.population = np.delete(self.population, id, axis=0).tolist()
@@ -115,6 +112,14 @@ class GeneticAlgorithm:
             tmpC = np.multiply(norm, mask)
             c += tmpC
             population[it] = self.toValue(c,sh,si)
+
+    def getFitest(self):
+        return np.amax(self.fitness), np.argmax(self.fitness)
+
+    def updateGBest(self):
+        lBest = self.getFitest()
+        if lBest[0] > self.gBest[0]:
+            self.gBest = [lBest[0], self.population[lBest[1]]]
 
     def toChromosome(self, value):
         shape = [(i.shape[0],i.shape[1]) for i in value]
