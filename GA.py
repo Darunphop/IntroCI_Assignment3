@@ -59,6 +59,17 @@ class GeneticAlgorithm:
 
         return itmPopuplation
 
+    def nextPopulation(self):
+        print(np.asarray(self.population).shape)
+        itmPop = self.selection()
+        print(itmPop.shape)
+        print(self.hash(itmPop))
+        print(np.asarray(self.population).shape)
+        print(self.hash(self.population))
+        newPop = np.concatenate((self.population, itmPop))
+        print(newPop.shape)
+        print(self.hash(newPop))
+
     def mating(self, population):
         res = []
         np.random.shuffle(population)
@@ -115,3 +126,9 @@ class GeneticAlgorithm:
 
     def toValue(self, chromosome, shape, size):
         return [i.reshape(shape[it]) for it,i in enumerate(np.split(chromosome, size))]
+
+    def hash(self, w):
+        sum = 0
+        for i in w:
+            sum += np.asarray([j.sum() for j in i]).sum()
+        return sum
