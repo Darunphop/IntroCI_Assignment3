@@ -28,7 +28,7 @@ class GeneticAlgorithm:
             self.nextPopulation()
             self.updateFitness()
             self.updateGBest()
-            res.append(self.getFitest()[0])
+            res.append([self.getFitest()[0], self.population[self.getFitest()[1]]])
         return res
 
 
@@ -53,30 +53,18 @@ class GeneticAlgorithm:
         self.population = np.delete(self.population, id, axis=0).tolist()
         self.fitness = np.delete(self.fitness, id)
 
-        # sum1 = 0
-        # for i in self.population:
-        #     x = np.concatenate((i[0],i[1],i[2]), axis=None)
-        #     sum1 += x.sum()
-        # print('after sum1', sum1)
         drop = spareSize - len(list(set(id)))
-        # print('drop', drop)
         if drop > 0:
             rIdx = np.argpartition(self.fitness, drop)
-            # print(rIdx[:drop])
             self.population = np.delete(self.population, rIdx[:drop], axis=0).tolist()
             self.fitness = np.delete(self.fitness, rIdx)
-        
-        # matedPop = self.mating(itmPopuplation)
-        # self.mutate(matedPop)
 
         return itmPopuplation
 
     def nextPopulation(self):
         itmPop = self.selection()
         newPop = np.concatenate((self.population, itmPop))
-        # print(self.hash(newPop))
         self.mutate(newPop)
-        # print(self.hash(newPop))
         self.population = newPop.tolist()
         self.it += 1
 
@@ -112,11 +100,7 @@ class GeneticAlgorithm:
     def mutate(self, population):
         size = 1000
         norm = np.random.normal(0,0.6,size)
-        # print(norm.max(), norm.min())
         mask = np.random.choice([0, 1], size=(size,), p=[1.-self.mRate, self.mRate])
-        # print(norm)
-        # print(mask)
-        # print(np.multiply(norm, mask))
 
 
         for it in range(len(population)):
